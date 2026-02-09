@@ -1,0 +1,18 @@
+{
+  "name": "Periyopoly",
+  "short_name": "Periyopoly",
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#1e3c72",
+  "theme_color": "#3498db",
+  "description": "Bilim İnsanlarıyla Elementleri Keşfet! Periyodik Tablo Oyunu.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

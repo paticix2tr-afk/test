@@ -1,0 +1,269 @@
+:root { 
+    /* TEMA RENKLERİ */ 
+    --bg-main: #f0f2f5;  
+    --board-bg: #ffffff;  
+    --text-primary: #2c3e50;  
+    --text-secondary: #546e7a; 
+             
+    --metal-color: #d35400; /* Turuncu */ 
+    --ametal-color: #8e44ad; /* Mor */ 
+    --soygaz-color: #2980b9; /* Mavi */ 
+             
+    --chance-color: #27ae60; /* Yeşil */ 
+    --penalty-color: #c0392b; /* Kırmızı */ 
+    --corner-color: #34495e; /* Koyu Gri */ 
+             
+    --accent-btn: #3498db;  
+    --accent-gold: #f1c40f;  
+} 
+
+* { box-sizing: border-box; } 
+
+body { 
+    font-family: 'Fredoka', 'Segoe UI', Tahoma, sans-serif; 
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+    color: var(--text-primary); 
+    margin: 0; 
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh; 
+    overflow: hidden; 
+} 
+
+/* --- GİRİŞ EKRANI --- */ 
+#setup-screen, #game-over-screen { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(240, 242, 245, 0.98);  
+    z-index: 100; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    padding: 20px; text-align: center; 
+} 
+#game-over-screen { display: none; z-index: 300; } 
+
+.title { 
+    font-family: 'Russo One', sans-serif;
+    font-size: 4rem; font-weight: 900; letter-spacing: 2px; margin: 0; 
+    color: var(--accent-btn); 
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.1); 
+} 
+.subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 25px; } 
+
+.input-group { margin: 8px; width: 100%; max-width: 350px; } 
+input { 
+    padding: 12px; background: #fff; border: 2px solid #bdc3c7; 
+    color: var(--text-primary); border-radius: 10px; width: 100%; text-align: center; font-size: 1.1rem; 
+    outline: none; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+} 
+input:focus { border-color: var(--accent-btn); } 
+
+.btn-main { 
+    font-family: 'Russo One', sans-serif;
+    padding: 12px 40px; font-size: 1.2rem; border-radius: 30px; border: none; 
+    background: linear-gradient(to bottom, var(--accent-btn), #2980b9); 
+    color: white; cursor: pointer; margin-top: 20px;  
+    box-shadow: 0 6px 0 #2573a7, 0 10px 10px rgba(0,0,0,0.2); 
+    transition: transform 0.1s, box-shadow 0.1s; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+} 
+.btn-main:active { 
+    transform: translateY(4px); 
+    box-shadow: 0 2px 0 #2573a7, 0 4px 4px rgba(0,0,0,0.2); 
+} 
+
+/* --- OYUN ALANI --- */ 
+#game-container { display: flex; flex: 1; padding: 5px; gap: 10px; height: 100%; align-items: center; justify-content: center; } 
+
+/* SOL PANEL */ 
+#sidebar { 
+    width: 25%; height: 92vmin; max-width: 300px; background: #ffffff; border-radius: 15px; padding: 10px; 
+    display: flex; flex-direction: column; gap: 8px; overflow-y: auto; 
+    border: 1px solid #dfe6e9; box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+} 
+.player-card { 
+    background: #f8f9fa; padding: 10px; border-radius: 10px; 
+    border-left: 5px solid #bdc3c7; position: relative; transition: 0.3s; border: 1px solid #eee; 
+} 
+.player-card.active { background: #e3f2fd; border-left: 5px solid var(--accent-btn); } 
+.player-card.eliminated { opacity: 0.6; border-left-color: var(--penalty-color); background: #ffebee; } 
+.player-card.finished { border: 2px solid var(--accent-gold); background: #fffde7; } 
+
+.p-info-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;} 
+.p-name { font-weight: bold; } 
+.p-money { font-weight: bold; color: var(--chance-color); font-family: monospace; } 
+.progress-bar { height: 5px; background: #e0e0e0; margin-top: 5px; border-radius: 3px; overflow: hidden;} 
+.progress-fill { height: 100%; background: var(--accent-btn); width: 0%; transition: width 0.5s; } 
+
+/* TAHTA */ 
+#board { 
+    flex: none; width: 92vmin; height: 92vmin; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); 
+    gap: 3px; background: #ffffff; border: 3px solid #bdc3c7; border-radius: 15px; 
+    position: relative; padding: 3px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+} 
+
+#center-control { 
+    grid-column: 2 / 8; grid-row: 2 / 8; background: #fdfdfd; border-radius: 15px; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    border: 1px solid #eee; text-align: center; 
+} 
+#move-display { font-size: 2.5rem; margin: 10px; font-weight: 900; color: var(--accent-btn); } 
+#log-box {  
+    height: 60px; width: 90%; background: #f0f2f5; border-radius: 8px;  
+    padding: 5px; font-size: 0.8rem; text-align: left; overflow-y: auto; color: var(--text-secondary); 
+    border: 1px solid #dcdde1; margin-top: 10px; 
+} 
+
+/* --- KART TASARIMI --- */ 
+.tile { 
+    position: relative; border-radius: 6px; cursor: pointer; overflow: hidden; 
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
+    transition: transform 0.2s; background-color: #fff; border: 1px solid #ddd; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+} 
+.tile:hover { transform: scale(1.08); z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.2); } 
+
+/* --- RESİM AYARLARI (GÜNCELLENDİ) --- */ 
+.tile-bg-layer { 
+    position: absolute; top:0; left:0; width:100%; height:100%; 
+    background-size: cover; background-position: center top; z-index: 0; 
+             
+    /* GÜNCELLEME: Beyazlık azaltıldı, resimler netleşti */ 
+    background-color: rgba(255,255,255,0.25);  
+    background-blend-mode: normal;  
+    filter: contrast(105%); /* Hafif kontrast artışı */ 
+} 
+
+.tile-content { 
+    position: relative; z-index: 1; width: 100%; height: 100%; 
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
+    padding: 3px; 
+} 
+
+/* Üst Çizgiler */ 
+.ametal .tile-content { border-top: 0.8vmin solid var(--ametal-color); } 
+.metal .tile-content { border-top: 0.8vmin solid var(--metal-color); } 
+.soygaz .tile-content { border-top: 0.8vmin solid var(--soygaz-color); } 
+.chance .tile-content { border-top: 0.8vmin solid var(--chance-color); background: rgba(255,255,255,0.85); } 
+.corner .tile-content { background: var(--corner-color); color: white; text-shadow: none; } 
+.penalty .tile-content { border-top: 0.8vmin solid var(--penalty-color); background: rgba(255,255,255,0.85); } 
+
+/* --- YAZILAR (GÜNCELLENDİ - OKUNABİLİRLİK KUTULARI) --- */ 
+.t-num {  
+    align-self: flex-start;  
+    font-size: 0.75rem;  
+    font-weight: 900;  
+    color: #000;  
+    background: rgba(255,255,255,0.85); /* Arkaya beyaz kutu */ 
+    padding: 1px 4px; 
+    border-radius: 4px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+} 
+ 
+.t-sym {  
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.6rem;  
+    color: #000;  
+    line-height: 1;  
+    margin-top: -5px; 
+             
+    /* GÜNCELLEME: Yazının arkasına şeffaf beyaz kutu eklendi ki resim üstünde okunsun */ 
+    background: rgba(255,255,255,0.75);  
+    padding: 2px 6px; 
+    border-radius: 6px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    backdrop-filter: blur(1px); 
+} 
+
+.t-name {  
+    font-size: 0.55rem;  
+    font-weight: 800;  
+    text-transform: uppercase;  
+    color: #000;  
+    background: rgba(255,255,255,0.9);  
+    padding: 2px 5px;  
+    border-radius: 4px;  
+    margin-bottom: 2px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+    width: 90%; 
+    text-align: center; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+} 
+ 
+.t-icon { font-size: 1.5rem; margin: auto; filter: drop-shadow(0 0 5px white); } 
+
+/* Piyon */ 
+.pawn-area { position: absolute; bottom: 2px; right: 2px; display: flex; gap: 2px; z-index: 2; flex-wrap: wrap-reverse; } 
+.pawn { width: 2vmin; height: 2vmin; border-radius: 50%; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.5); } 
+
+/* --- MODALLER --- */ 
+.overlay { 
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; 
+    align-items: center; justify-content: center; padding: 20px; 
+} 
+.modal-box { 
+    background: #ffffff; padding: 25px; border-radius: 20px; width: 100%; max-width: 450px; 
+    text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 1px solid #eee; 
+} 
+ 
+.info-header { 
+    display: flex; justify-content: space-between; align-items: center; padding: 15px; 
+    border-radius: 15px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+    background-size: cover; background-position: center; margin-bottom: 15px; 
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5); 
+} 
+
+.btn-opt { flex: 1; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; font-size: 1rem; } 
+.btn-yes { background: var(--chance-color); } 
+.btn-no { background: var(--penalty-color); } 
+
+/* --- LANDSCAPE MODE --- */
+@media (orientation: portrait) {
+    #landscape-overlay {
+        display: flex !important;
+    }
+}
+
+/* Mobil (Sadece yazı boyutları vb için, layout zaten vmin ile ayarlı) */ 
+@media (max-height: 600px) { 
+    .t-sym { font-size: 1.2rem; } 
+    .t-name { font-size: 0.4rem; }
+    .t-num { font-size: 0.6rem; }
+    #move-display { font-size: 1.5rem; }
+    .player-card { padding: 5px; }
+    .p-info-row { font-size: 0.8rem; }
+}
+.btn-secondary {
+    background: linear-gradient(to bottom, #95a5a6, #7f8c8d);
+    box-shadow: 0 6px 0 #576566, 0 10px 10px rgba(0,0,0,0.2);
+    font-size: 1rem;
+}
+.btn-secondary:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #576566, 0 4px 4px rgba(0,0,0,0.2);
+}
+
+.btn-warning {
+    background: linear-gradient(to bottom, #f1c40f, #f39c12);
+    box-shadow: 0 6px 0 #d35400, 0 10px 10px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.btn-warning:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #d35400, 0 4px 4px rgba(0,0,0,0.2);
+}
+
+.btn-dark {
+    background: linear-gradient(to bottom, #34495e, #2c3e50);
+    box-shadow: 0 6px 0 #1a252f, 0 10px 10px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.btn-dark:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #1a252f, 0 4px 4px rgba(0,0,0,0.2);
+}

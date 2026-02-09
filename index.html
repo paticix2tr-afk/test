@@ -1,0 +1,109 @@
+<!DOCTYPE html> 
+<html lang="tr"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    <title>Periyopoly - Bilim İnsanları Serisi</title> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head> 
+<body> 
+ 
+    <div id="splash-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; transition: opacity 1s ease-out;">
+        <div style="font-size:5rem; margin-bottom:20px;">⚛️</div>
+        <h1 style="font-family:'Russo One', sans-serif; font-size:3rem; margin:0; text-shadow: 0 4px 10px rgba(0,0,0,0.3);">PERİYOPOLY</h1>
+        <p style="font-family:'Fredoka', sans-serif; font-size:1.2rem; margin-top:10px; opacity:0.8;">Bilim Dünyasına Yolculuk...</p>
+        <div class="loader" style="margin-top:30px; width:40px; height:40px; border:4px solid rgba(255,255,255,0.3); border-top:4px solid white; border-radius:50%; animation: spin 1s linear infinite;"></div>
+    </div>
+    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+
+    <div id="setup-screen" style="background: rgba(240, 242, 245, 0.9);"> 
+        <h1 class="title">PERİYOPOLY</h1> 
+        <p class="subtitle">Bilim İnsanlarıyla Elementleri Keşfet!</p> 
+        <div id="player-inputs"></div> 
+        <button class="btn-main btn-secondary" onclick="addInput()">+ OYUNCU</button> 
+        <button class="btn-main" onclick="startGame()">BAŞLA</button> 
+        <button class="btn-main btn-warning" onclick="openHowToPlay()">NASIL OYNANIR?</button>
+        <button class="btn-main btn-dark" onclick="toggleFullscreen()">TAM EKRAN</button>
+    </div> 
+
+    <div id="how-to-play-overlay" class="overlay" onclick="closeHowToPlay(event)">
+        <div class="modal-box" onclick="event.stopPropagation()" style="text-align: left; max-height: 80vh; overflow-y: auto;">
+            <h2 style="color:var(--accent-btn); text-align:center;">NASIL OYNANIR?</h2>
+            <ul style="line-height: 1.6; padding-left: 20px;">
+                <li><strong>Amaç:</strong> En çok parayı (elektronu) toplayıp oyunu bitirmek.</li>
+                <li><strong>Sıra:</strong> Sırası gelen oyuncu "İLERLE" butonuna basarak zar atar.</li>
+                <li><strong>Elementler:</strong> Bir elementin üzerine geldiğinizde, o elementle ilgili bir soru sorulur. Doğru bilirseniz elementin değeri kadar para kazanırsınız. Yanlış bilirseniz kaybedersiniz.</li>
+                <li><strong>Şans & Ceza:</strong> Şans kutuları ekstra puan, Ceza kutuları puan kaybı demektir.</li>
+                <li><strong>Bitiş:</strong> 10.000 Elektrona ulaşan ilk oyuncu kazanır! Parası biten elenir.</li>
+            </ul>
+            <div style="text-align: center;">
+                <button class="btn-main" onclick="closeHowToPlay()" style="padding:10px 30px; margin-top:15px; font-size:1rem; background:#95a5a6;">ANLADIM</button>
+            </div>
+        </div>
+    </div>
+ 
+    <div id="game-over-screen"> 
+        <h1 class="title" style="color:var(--accent-gold); font-size:3rem; text-shadow:none;">OYUN BİTTİ</h1> 
+        <div id="results" style="background:#fff; padding:20px; border-radius:15px; width:90%; max-width:400px; margin:20px 0; text-align:left;"></div> 
+        <button class="btn-main" onclick="location.reload()">TEKRAR</button> 
+    </div> 
+ 
+    <div id="landscape-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#2c3e50; z-index:9999; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center;">
+        <div style="font-size:4rem;">🔄</div>
+        <h2>Lütfen Ekranı Döndürün</h2>
+        <p>Bu oyun yatay modda oynanmak üzere tasarlanmıştır.</p>
+    </div>
+
+    <div id="info-overlay" class="overlay" onclick="closeInfo(event)"> 
+        <div class="modal-box" onclick="event.stopPropagation()" style="text-align: left;"> 
+            <div id="info-content"></div> 
+            <div style="text-align: center;"> 
+                <button class="btn-main" onclick="closeInfo()" style="padding:10px 30px; margin-top:15px; font-size:1rem; background:#95a5a6;">KAPAT</button> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <div id="question-overlay" class="overlay" data-win="0" data-lose="0"> 
+        <div class="modal-box"> 
+            <h2 id="q-type" style="margin:0 0 15px 0; color:var(--accent-btn);">SORU</h2> 
+            <div id="q-visual" style="margin-bottom:15px; font-size: 3rem;"></div> 
+            <p id="q-text" style="font-size:1.2rem; margin-bottom:25px; color:var(--text-primary); font-weight: 500;">...</p> 
+            <div style="display:flex; gap:10px;"> 
+                <button class="btn-opt btn-yes" onclick="answer(true)">DOĞRU</button> 
+                <button class="btn-opt btn-no" onclick="answer(false)">YANLIŞ</button> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <div id="game-container" style="display:none;"> 
+        <div id="sidebar"> 
+            <div id="p-list"></div> 
+        </div> 
+        <div id="board"> 
+            <div id="center-control"> 
+                <div id="turn-text" style="font-weight:bold; color:#333;">SIRA: ...</div> 
+                <div id="move-display">⚛️ <span id="move-count">-</span></div> 
+                <button class="btn-main" id="turn-btn" onclick="takeTurn()">İLERLE</button> 
+                <div id="log-box">Oyun Hazır.</div> 
+            </div> 
+        </div> 
+    </div> 
+ 
+<script src="script.js"></script> 
+</body> 
+</html><script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then((registration) => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, (err) => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+</script>

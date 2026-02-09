@@ -1,0 +1,35 @@
+127.0.0.1 - - [08/Feb/2026 23:41:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [08/Feb/2026 23:41:28] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [08/Feb/2026 23:41:28] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/gaylussac.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/lavoiser.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/august.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/henry.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/alamy.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:29] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:29] "GET /bilimadami/nicolas.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/priestley.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/rutherford.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/moissan.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/brand.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/ramsay.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/davy.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/scheele.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/orsted.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/berzelius.webp HTTP/1.1" 404 -
+127.0.0.1 - - [08/Feb/2026 23:41:30] code 404, message File not found
+127.0.0.1 - - [08/Feb/2026 23:41:30] "GET /bilimadami/strutt.webp HTTP/1.1" 404 -
